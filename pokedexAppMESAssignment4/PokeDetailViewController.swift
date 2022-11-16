@@ -6,24 +6,66 @@
 //
 
 import UIKit
+import Alamofire
 import SDWebImage
 
 class PokeDetailViewController: UIViewController {
 
     @IBOutlet weak var pokeaImageView: UIImageView!
     @IBOutlet weak var pokeDescLabel: UILabel!
+    @IBOutlet weak var pokeTypeLabel: UILabel!
+    @IBOutlet weak var pokeHeightLabel: UILabel!
+    @IBOutlet weak var pokeWeightLabel: UILabel!
+    @IBOutlet weak var pokeDefenseLabel: UILabel!
+    @IBOutlet weak var pokeIdLabel: UILabel!
+    @IBOutlet weak var pokeAtkLabel: UILabel!
     
     var pokemon: Pokemon?
+    var pokeDesc: PokeDesc?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.title = pokemon?.name
-        self.pokeDescLabel.text = pokemon?.name
+        self.title = pokemon?.name?.capitalized
+        self.pokeDescLabel.text = pokemon?.name?.capitalized
         self.pokeaImageView.sd_setImage(with: URL(string: pokemon?.imageURL ?? ""))
         // Do any additional setup after loading the view.
+        
+
+        
+        let urlRequest: Alamofire.URLRequestConvertible = URLRequest(url: URL(string: pokemon?.url ?? "")!)
+                AF.request(urlRequest).responseDecodable(of: PokeDesc.self) { response in
+                    switch response.result {
+                        
+                    case .success(let result):
+                        
+                        func type(_ totalType: Int) -> String {
+                            let oneType = result.types?[0].type?.name?.capitalized ?? ""
+                            
+                            if totalType>1{
+                                let twoType = oneType + " & \(result.types?[1].type?.name?.capitalized ?? "")"
+                                return twoType
+                            }
+                            return oneType
+                        }
+                        
+                        self.pokeTypeLabel.text = type(result.types?.count ?? 0)
+                        
+                        print(type(result.types?.count ?? 0))
+                        
+                        self.pokeHeightLabel.text = "\(result.height ?? 0)"
+                        self.pokeWeightLabel.text = "\(result.weight ?? 0)"
+                        self.pokeDefenseLabel.text = "\(result.stats?[2].baseStat ?? 0)"
+                        self.pokeIdLabel.text = "\(result.id ?? 0)"
+                        self.pokeAtkLabel.text = "\(result.stats?[1].baseStat ?? 0)"
+                        
+                    case .failure(let error):
+                        print(error)
+                        break
+                    }
+                }
     }
-    
+
 
     /*
     // MARK: - Navigation

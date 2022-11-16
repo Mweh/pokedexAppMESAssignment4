@@ -68,7 +68,7 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, 
         cell.wrapperView.layer.cornerRadius = 20
         
         if let pokemon = self.pokemons?[indexPath.item], let name = pokemon.name{
-            cell.pokeNameLabel.text = name
+            cell.pokeNameLabel.text = name.capitalized
             cell.pokeImageView.sd_setImage(with: URL(string: self.imageURL + name + ".jpg"))
         }
         
