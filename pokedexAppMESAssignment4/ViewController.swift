@@ -65,7 +65,7 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, 
             return UICollectionViewCell(frame: .zero)
         }
         
-        cell.wrapperView.layer.cornerRadius = 8
+        cell.wrapperView.layer.cornerRadius = 20
         
         if let pokemon = self.pokemons?[indexPath.item], let name = pokemon.name{
             cell.pokeNameLabel.text = name
