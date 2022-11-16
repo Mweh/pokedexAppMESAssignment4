@@ -89,4 +89,3 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, 
         }
     }
 }
-
