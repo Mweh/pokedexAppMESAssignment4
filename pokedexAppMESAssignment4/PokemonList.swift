@@ -26,4 +26,5 @@ struct PokemonList: Codable {
 struct Pokemon: Codable {
     let name: String?
     let url: String?
+    var imageURL: String?
 }

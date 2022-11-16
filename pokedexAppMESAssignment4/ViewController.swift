@@ -37,6 +37,21 @@ class ViewController: UIViewController {
         }
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        switch segue.identifier {
+        case "toPokeDetail":
+            let vc = segue.destination as? PokeDetailViewController
+            
+            if let pokemon = sender as? Pokemon{
+                vc?.pokemon = pokemon
+
+            }
+            
+        default:
+            break
+        }
+    }
+    
 }
 
 extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
@@ -66,5 +81,12 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, 
         return CGSize(width: size, height: size)
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if var pokemon = self.pokemons?[indexPath.item], let name = pokemon.name{
+            pokemon.imageURL = self.imageURL + name + ".jpg"
+            performSegue(withIdentifier: "toPokeDetail", sender: pokemon)
+            
+        }
+    }
 }
 
